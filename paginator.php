@@ -65,13 +65,20 @@ class paginator
             );
             $arr[] = $row;
         }
-        array_unshift($arr, $this->getPre());
-        array_push($arr, $this->getNext());
+        if (count($arr) > 0) {
+            array_unshift($arr, $this->getPre());
+            array_push($arr, $this->getNext());
+        }
+
         return $arr;
     }
 
     private function getBeginEnd()
     {
+        // 一页能显示下所有数据时，无需分页
+        if ($this->pageCount <= 1) {
+            return array(0, 0);
+        }
         $half = intval($this->urlCount / 2);
         $begin = $this->currentPage - $half;
         if ($begin < 0) {
@@ -85,10 +92,6 @@ class paginator
         // end 算出来 可能比总页数要多
         if ($end > $this->pageCount) {
             $end = $this->pageCount;
-        }
-        // 当页面出错时 只显示第一页
-        if ($begin >= $end) {
-            return array(0, 1);
         }
         return array($begin, $end);
     }
