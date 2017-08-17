@@ -24,7 +24,7 @@ class paginator
 
     private function getCurrent()
     {
-        if (array_key_exists($this->pageName, $_GET)) {
+        if ($_SERVER['REQUEST_METHOD'] == 'GET' && array_key_exists($this->pageName, $_GET)) {
             return intval($_GET[$this->pageName]);
         }
         return 0;
